@@ -1,5 +1,12 @@
 package com.cardgame.obj;
 
-public class Hand {
+import java.util.ArrayList;
 
+public class Hand {
+	private ArrayList<Card> cardOnHand = new ArrayList<Card>();
+
+	public Hand() {
+		
+	}
+	
 }

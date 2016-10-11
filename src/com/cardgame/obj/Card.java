@@ -7,7 +7,7 @@ public class Card {
 	private Rank rank = null;
 	private Boolean isJoker = false;	
 	private ImageIcon image = null;	
-	private String packagePath = "com/cardgame/img/";		 		 
+	private final String packagePath = "com/cardgame/img/";	 		 
 	
 	public Card (Suit suit, Rank rank) {
 		this.suit = suit;
@@ -19,5 +19,22 @@ public class Card {
 		this.isJoker = true;
 		image = new ImageIcon(Card.class.getClassLoader().getResource(packagePath + "Joker.png"));
 	}	
+		
+	public Suit getSuit() {
+		return suit;
+	}
+
+	public Rank getRank() {
+		return rank;
+	}
+
+	public Boolean getIsJoker() {
+		return isJoker;
+	}
+
+	public ImageIcon getImage() {
+		return image;
+	}
+
 
 }
