@@ -1,15 +1,15 @@
 package com.cardgame.obj;
 
 public enum GameType {
-    BLACKJACK("BJ"), PISTI("PT");
+    PISTI("PÝÞTÝ");
 
-    private String abbr;
+    private String desc;
 
-    private GameType(String abbr) {
-    	this.abbr = abbr;
+    private GameType(String desc) {
+    	this.desc = desc;
     }
     
     public String getValue() {
-    	return abbr;
+    	return desc;
     }    
 }

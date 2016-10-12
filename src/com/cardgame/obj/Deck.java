@@ -16,7 +16,9 @@ public class Deck {
 	public void initalizeDeck() {
 		for (Suit s: Suit.values()) {
 			for (Rank r: Rank.values()) {
-				cards.add(new Card(s, r));
+				Card card = new Card(s, r);
+				assignValueToCard(card);
+				cards.add(card);
 			}
 		}
 	}
@@ -25,4 +27,21 @@ public class Deck {
 		Collections.shuffle(cards);
 	}
 	
+	public ArrayList<Card> getCards() {
+		return cards;
+	}
+
+	public void assignValueToCard(Card card) {
+		switch(gameType)
+		{
+		case PISTI:
+			if(card.getSuit() == Suit.CLUBS && card.getRank() == Rank.TWO)
+				card.setValue(2);
+			else if(card.getSuit() == Suit.DIAMONDS && card.getRank() == Rank.TEN)
+				card.setValue(3);
+			else if(card.getRank() == Rank.ACE || card.getRank() == Rank.JACK)
+				card.setValue(1);
+			break;
+		}
+	}
 }

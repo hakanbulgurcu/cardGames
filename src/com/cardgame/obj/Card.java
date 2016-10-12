@@ -5,13 +5,14 @@ import javax.swing.ImageIcon;
 public class Card {
 	private Suit suit = null;
 	private Rank rank = null;
+	private Integer value = 0;
 	private Boolean isJoker = false;	
 	private ImageIcon image = null;	
 	private final String packagePath = "com/cardgame/img/";	 		 
 	
 	public Card (Suit suit, Rank rank) {
 		this.suit = suit;
-		this.rank = rank;
+		this.rank = rank;	
 		image = new ImageIcon(Card.class.getClassLoader().getResource(packagePath + suit.getValue() + rank.getValue() + ".png"));
 	}
 	
@@ -34,6 +35,14 @@ public class Card {
 
 	public ImageIcon getImage() {
 		return image;
+	}
+
+	public Integer getValue() {
+		return value;
+	}
+
+	public void setValue(Integer value) {
+		this.value = value;
 	}
 
 
