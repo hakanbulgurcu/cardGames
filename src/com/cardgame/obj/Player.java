@@ -8,8 +8,10 @@ public class Player {
 	private ArrayList<Card> cardOnHand = new ArrayList<Card>();
 	private ArrayList<Card> cardsTaken = new ArrayList<Card>();
 	private String name;
-	private Boolean isComputer;
+	private Boolean isComputer = true;
 	private Game game;
+	private Integer pisti = 0;
+	private Integer score = 0;
 	
 	public Player(Game game, String name, Boolean isComputer){
 		this.game = game;
@@ -41,15 +43,6 @@ public class Player {
 		this.cardOnHand = cardOnHand;
 	}
 	
-	public Integer calculateScore() {
-		Integer score = 0;
-		for(Card c: cardsTaken) {
-			score += c.getValue();
-		}
-		
-		return score;	
-	}
-	
 	public Card decideCardToPlay() {
 		if(cardOnHand.size() > 0)
 		{
@@ -72,6 +65,56 @@ public class Player {
 		}
 		else
 			return null;				
+	}
+	
+	public void dealCardToDesk() {
+		Card card = decideCardToPlay();
+		Integer numOfCardOnDesk = game.getCardsOnDesk().size();
+		Card topDesk = null;
+		System.out.println(this.getName() + " player " + card.getSuit().getValue() + card.getRank().getValue() + " Score: " + this.getScore() + " piþti: " + pisti);
+		
+		if(numOfCardOnDesk != 0)
+			topDesk = game.getCardsOnDesk().get(numOfCardOnDesk - 1);
+		
+		cardOnHand.remove(card);
+		
+		if(topDesk != null && card.getRank() == topDesk.getRank()) {
+			if(numOfCardOnDesk == 1) {
+				pisti++;
+				this.setScore(this.getScore() + 10);
+			}
+			
+			game.getCardsOnDesk().add(card);
+			cardsTaken.addAll(game.getCardsOnDesk());
+			this.setScore(this.getScore() + totalScoreOfTaken(game.getCardsOnDesk()));
+			game.getCardsOnDesk().clear();
+			game.setLastPlayerTaken(this);
+		} else if (card.getRank() == Rank.JACK){
+			game.getCardsOnDesk().add(card);
+			cardsTaken.addAll(game.getCardsOnDesk());
+			this.setScore(this.getScore() + totalScoreOfTaken(game.getCardsOnDesk()));
+			game.getCardsOnDesk().clear();
+			game.setLastPlayerTaken(this);			
+		} else {
+			game.getCardsOnDesk().add(card);			
+		}		
+	}
+	
+	public Integer totalScoreOfTaken(ArrayList<Card> cards) {
+		Integer score = 0;
+		for(Card c: cards) {
+			score += c.getValue();
+		}
+		
+		return score;	
+	}
+
+	public Integer getScore() {
+		return score;
+	}
+
+	public void setScore(Integer score) {
+		this.score = score;
 	}
 
 }

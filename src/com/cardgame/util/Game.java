@@ -3,6 +3,8 @@ package com.cardgame.util;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import javax.swing.JFrame;
+
 import com.cardgame.obj.Card;
 import com.cardgame.obj.Deck;
 import com.cardgame.obj.GameType;
@@ -18,11 +20,14 @@ public class Game {
 	private Integer numOfDecks = 0;
 	private Integer numOfCardsOnDeskBeforeStart = 0;
 	private Integer numOfCardsEachDeal = 0;
-
-	public Game(GameType gameType, Integer numOfPlayers, Integer numOfDecks) {
+	private JFrame frame;
+	private Player lastPlayerTaken;
+	
+	public Game(JFrame frame, GameType gameType, Integer numOfPlayers, Integer numOfDecks) {
 		this.gameType = gameType;	
 		this.numOfPlayers = numOfPlayers;
 		this.numOfDecks = numOfDecks; 
+		this.frame = frame; 
 		
 		switch(gameType)
 		{
@@ -55,7 +60,7 @@ public class Game {
 		createDeck();		
 		createPlayers();
 		dealCardOnDesk();
-		dealCardToPlayers();
+		run();
 	}
 
 	private void dealCardOnDesk() {
@@ -64,8 +69,9 @@ public class Game {
 		}
 
 		for(int i = 0; i < numOfCardsOnDeskBeforeStart; i++) {
-			cardsOnDeck.remove(0);
+			cardsOnDeck.remove(cardsOnDeck.get(0));
 		}
+		
 	}
 	
 	private void dealCardToPlayers() {
@@ -75,9 +81,51 @@ public class Game {
 			}
 			
 			for(int i = 0; i < numOfCardsEachDeal; i++) {
-				cardsOnDeck.remove(0);
-			}			
+				cardsOnDeck.remove(cardsOnDeck.get(0));
+			}
 		}		
+	}
+	
+	private void run() {		
+		while(cardsOnDeck.size() > 0) {
+			dealCardToPlayers();
+			while(calculateNumOfCardOnPlayersHand() > 0) {
+				for(Player p: players) {
+					p.dealCardToDesk();
+					p.getScore();
+					frame.repaint();
+				}
+			}
+		}
+		
+		//Yerde kalan kartlar en son kart alan oyuncuya aktarýlýyor.
+		lastPlayerTaken.getCardsTaken().addAll(cardsOnDesk);
+		lastPlayerTaken.setScore(lastPlayerTaken.getScore() + lastPlayerTaken.totalScoreOfTaken(cardsOnDesk));
+		cardsOnDesk.clear();
+		
+		Integer maxCard = 0;
+		Player temp = null;
+		
+		for(Player p: players) {
+			if(maxCard < p.getCardsTaken().size()) {
+				maxCard = p.getCardsTaken().size();
+				temp = p;
+			}
+			
+			System.out.println(p.getName() + "-" + p.getScore());
+			frame.repaint();
+		}
+		
+		temp.setScore(temp.getScore() + 3);
+	}	
+	
+	private Integer calculateNumOfCardOnPlayersHand() {
+		Integer cnt = 0;
+		for(Player p: players) {
+			cnt += p.getCardOnHand().size();
+		}
+		
+		return cnt;
 	}
 	
 	public ArrayList<Card> getCardsOnDesk() {
@@ -100,4 +148,7 @@ public class Game {
 		this.numOfDecks = numOfDecks;
 	}
 
+	public void setLastPlayerTaken(Player lastPlayerTaken) {
+		this.lastPlayerTaken = lastPlayerTaken;
+	}
 }
