@@ -2,6 +2,7 @@ package com.cardgame.obj;
 
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 public class Card {
 	private Suit suit = null;
@@ -10,11 +11,14 @@ public class Card {
 	private Boolean isJoker = false;	
 	private Image image = null;	
 	private final String packagePath = "com/cardgame/img/";	 		 
+	private JLabel label = new JLabel();
+	private final Integer width = 67, height = 80;
 	
 	public Card (Suit suit, Rank rank) {
 		this.suit = suit;
 		this.rank = rank;	
 		image = new ImageIcon(Card.class.getClassLoader().getResource(packagePath + suit.getValue() + rank.getValue() + ".png")).getImage();
+		label.setIcon(new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_DEFAULT)));	
 	}
 	
 	public Card () {
@@ -46,5 +50,16 @@ public class Card {
 		this.value = value;
 	}
 
+	public JLabel getLabel() {
+		return label;
+	}
+
+	public Integer getWidth() {
+		return width;
+	}
+
+	public Integer getHeight() {
+		return height;
+	}
 
 }

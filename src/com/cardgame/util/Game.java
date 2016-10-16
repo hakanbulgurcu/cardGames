@@ -20,10 +20,10 @@ public class Game {
 	private Integer numOfDecks = 0;
 	private Integer numOfCardsOnDeskBeforeStart = 0;
 	private Integer numOfCardsEachDeal = 0;
-	private JFrame frame;
+	private MainFrame frame;
 	private Player lastPlayerTaken;
 	
-	public Game(JFrame frame, GameType gameType, Integer numOfPlayers, Integer numOfDecks) {
+	public Game(MainFrame frame, GameType gameType, Integer numOfPlayers, Integer numOfDecks) {
 		this.gameType = gameType;	
 		this.numOfPlayers = numOfPlayers;
 		this.numOfDecks = numOfDecks; 
@@ -81,7 +81,10 @@ public class Game {
 			}
 			
 			for(int i = 0; i < numOfCardsEachDeal; i++) {
-				cardsOnDeck.remove(cardsOnDeck.get(0));
+				if(cardsOnDeck.size() > 1)
+					cardsOnDeck.remove(cardsOnDeck.get(0));
+				else
+					cardsOnDeck = new ArrayList<Card>();
 			}
 		}		
 	}
@@ -93,7 +96,7 @@ public class Game {
 				for(Player p: players) {
 					p.dealCardToDesk();
 					p.getScore();
-					frame.repaint();
+					frame.drawLabels();
 				}
 			}
 		}
@@ -101,8 +104,9 @@ public class Game {
 		//Yerde kalan kartlar en son kart alan oyuncuya aktarýlýyor.
 		lastPlayerTaken.getCardsTaken().addAll(cardsOnDesk);
 		lastPlayerTaken.setScore(lastPlayerTaken.getScore() + lastPlayerTaken.totalScoreOfTaken(cardsOnDesk));
-		cardsOnDesk.clear();
-		
+		cardsOnDesk = new ArrayList<Card>();
+
+		//Elinde en çok kart olan oyuncu belirlenip puanlarý aktarýlýyor.
 		Integer maxCard = 0;
 		Player temp = null;
 		
@@ -110,13 +114,16 @@ public class Game {
 			if(maxCard < p.getCardsTaken().size()) {
 				maxCard = p.getCardsTaken().size();
 				temp = p;
-			}
-			
-			System.out.println(p.getName() + "-" + p.getScore());
-			frame.repaint();
+			}			
 		}
 		
-		temp.setScore(temp.getScore() + 3);
+		temp.setScore(temp.getScore() + 3 * numOfDecks);
+
+		for(Player p: players) {
+			System.out.println(p.getName() + "-" + p.getScore());			
+		}
+
+		frame.drawLabels();
 	}	
 	
 	private Integer calculateNumOfCardOnPlayersHand() {
@@ -150,5 +157,13 @@ public class Game {
 
 	public void setLastPlayerTaken(Player lastPlayerTaken) {
 		this.lastPlayerTaken = lastPlayerTaken;
+	}
+
+	public void setCardsOnDesk(ArrayList<Card> cardsOnDesk) {
+		this.cardsOnDesk = cardsOnDesk;
+	}
+
+	public JFrame getFrame() {
+		return frame;
 	}
 }

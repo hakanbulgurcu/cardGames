@@ -76,7 +76,10 @@ public class Player {
 		if(numOfCardOnDesk != 0)
 			topDesk = game.getCardsOnDesk().get(numOfCardOnDesk - 1);
 		
-		cardOnHand.remove(card);
+		if(cardOnHand.size() > 1)
+			cardOnHand.remove(card);
+		else
+			cardOnHand = new ArrayList<Card>();
 		
 		if(topDesk != null && card.getRank() == topDesk.getRank()) {
 			if(numOfCardOnDesk == 1) {
@@ -87,17 +90,17 @@ public class Player {
 			game.getCardsOnDesk().add(card);
 			cardsTaken.addAll(game.getCardsOnDesk());
 			this.setScore(this.getScore() + totalScoreOfTaken(game.getCardsOnDesk()));
-			game.getCardsOnDesk().clear();
+			game.setCardsOnDesk(new ArrayList<Card>());
 			game.setLastPlayerTaken(this);
 		} else if (card.getRank() == Rank.JACK){
 			game.getCardsOnDesk().add(card);
 			cardsTaken.addAll(game.getCardsOnDesk());
 			this.setScore(this.getScore() + totalScoreOfTaken(game.getCardsOnDesk()));
-			game.getCardsOnDesk().clear();
+			game.setCardsOnDesk(new ArrayList<Card>());
 			game.setLastPlayerTaken(this);			
 		} else {
 			game.getCardsOnDesk().add(card);			
-		}		
+		}				
 	}
 	
 	public Integer totalScoreOfTaken(ArrayList<Card> cards) {
