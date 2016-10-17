@@ -12,7 +12,7 @@ public class Card {
 	private Image image = null;	
 	private final String packagePath = "com/cardgame/img/";	 		 
 	private JLabel label = new JLabel();
-	private final Integer width = 67, height = 80;
+	private final Integer width = 120, height = 144;
 	
 	public Card (Suit suit, Rank rank) {
 		this.suit = suit;
@@ -24,6 +24,7 @@ public class Card {
 	public Card () {
 		this.isJoker = true;
 		image = new ImageIcon(Card.class.getClassLoader().getResource(packagePath + "Joker.png")).getImage();
+		label.setIcon(new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_DEFAULT)));	
 	}	
 		
 	public Suit getSuit() {

@@ -96,7 +96,14 @@ public class Game {
 				for(Player p: players) {
 					p.dealCardToDesk();
 					p.getScore();
-					frame.drawLabels();
+					frame.drawLabels();					
+					
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 		}
@@ -122,7 +129,7 @@ public class Game {
 		for(Player p: players) {
 			System.out.println(p.getName() + "-" + p.getScore());			
 		}
-
+		
 		frame.drawLabels();
 	}	
 	

@@ -81,7 +81,7 @@ public class Player {
 		else
 			cardOnHand = new ArrayList<Card>();
 		
-		if(topDesk != null && card.getRank() == topDesk.getRank()) {
+		if(numOfCardOnDesk > 0 && card.getRank() == topDesk.getRank()) {
 			if(numOfCardOnDesk == 1) {
 				pisti++;
 				this.setScore(this.getScore() + 10);
@@ -92,7 +92,7 @@ public class Player {
 			this.setScore(this.getScore() + totalScoreOfTaken(game.getCardsOnDesk()));
 			game.setCardsOnDesk(new ArrayList<Card>());
 			game.setLastPlayerTaken(this);
-		} else if (card.getRank() == Rank.JACK){
+		} else if (card.getRank() == Rank.JACK && numOfCardOnDesk > 0){
 			game.getCardsOnDesk().add(card);
 			cardsTaken.addAll(game.getCardsOnDesk());
 			this.setScore(this.getScore() + totalScoreOfTaken(game.getCardsOnDesk()));

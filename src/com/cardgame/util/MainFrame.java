@@ -36,18 +36,17 @@ public class MainFrame extends JFrame{
 	}
 	
 	public void drawLabels() {
-		Integer onDeskX = this.getWidth() / 3, onDeskY = this.getHeight() / 3, gap = 15;
-		Integer p1X = this.getWidth() * 2 / 6, p1Y = this.getHeight() * 5 / 6, 
+		Integer onDeskX = this.getWidth() / 3, onDeskY = this.getHeight() / 3, gap = 25;
+		Integer p1X = this.getWidth() * 2 / 6, p1Y = this.getHeight() * 5 / 6 - gap, 
 				p2X = this.getWidth() * 5 / 6, p2Y = this.getHeight() * 2 / 6, 
 				p3X = this.getWidth() * 2 / 6, p3Y = 10, 
 				p4X = 10, p4Y = this.getHeight() * 2 / 6;
-		Integer p1TX = this.getWidth() * 5 / 6, p1TY = this.getHeight() * 5 / 6, 
-				p2TX = this.getWidth() * 5 / 6, p2TY = 10, 
+		Integer p1TX = this.getWidth() * 4 / 6, p1TY = this.getHeight() * 5 / 6 - gap, 
+				p2TX = this.getWidth() * 4 / 6, p2TY = 10, 
 				p3TX = 10, p3TY = 10, 
-				p4TX = 10, p4TY = this.getHeight() * 5 / 6;
+				p4TX = 10, p4TY = this.getHeight() * 5 / 6 - gap;
 		
-		for(int d = 0; d < game.getCardsOnDesk().size(); d++)
-		{
+		for(int d = game.getCardsOnDesk().size() - 1; d >= 0; d--) {
 			Card c = game.getCardsOnDesk().get(d);
 		    c.getLabel().setVisible(true);
 		    c.getLabel().setBounds(onDeskX, onDeskY, c.getWidth(), c.getHeight());
@@ -71,8 +70,9 @@ public class MainFrame extends JFrame{
 			    mainPanel.add(c.getLabel());				
 			    pX += gap;
 			}
-			
-			for(Card c : game.getPlayers().get(p).getCardsTaken()) {
+
+			for(int t = game.getPlayers().get(p).getCardsTaken().size() - 1; t >= 0; t--) {
+				Card c = game.getPlayers().get(p).getCardsTaken().get(t);
 			    c.getLabel().setVisible(true);
 			    c.getLabel().setBounds(pTX, pTY, c.getWidth(), c.getHeight());
 			    mainPanel.add(c.getLabel());
